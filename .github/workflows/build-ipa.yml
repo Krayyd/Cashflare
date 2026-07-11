@@ -96,44 +96,46 @@ jobs:
       - name: Package unsigned IPA payload
         if: steps.signing.outputs.mode == 'unsigned'
         run: |
+          set -euo pipefail
           APP_PATH=$(find build/DerivedData/Build/Products -name 'Cashflare.app' | head -n 1)
           echo "Using app: $APP_PATH"
           test -d "$APP_PATH"
+          test -f "$APP_PATH/Cashflare"
 
-          # Ensure Info.plist always has bundle id (Sideloadly requires it)
-          if [ ! -f "$APP_PATH/Info.plist" ]; then
-            echo "Info.plist missing — copying project plist"
-            cp Cashflare/Info.plist "$APP_PATH/Info.plist"
-            /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable Cashflare" "$APP_PATH/Info.plist" || \
-              /usr/libexec/PlistBuddy -c "Add :CFBundleExecutable string Cashflare" "$APP_PATH/Info.plist"
-          fi
-
-          BID=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Info.plist" 2>/dev/null || true)
-          if [ -z "$BID" ] || [ "$BID" = '$(PRODUCT_BUNDLE_IDENTIFIER)' ]; then
-            /usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier com.krayd.cashflare" "$APP_PATH/Info.plist" 2>/dev/null || \
-              /usr/libexec/PlistBuddy -c "Add :CFBundleIdentifier string com.krayd.cashflare" "$APP_PATH/Info.plist"
-          fi
-          EXE=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Info.plist" 2>/dev/null || true)
-          if [ -z "$EXE" ] || [[ "$EXE" == *'$('* ]]; then
-            /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable Cashflare" "$APP_PATH/Info.plist" 2>/dev/null || \
-              /usr/libexec/PlistBuddy -c "Add :CFBundleExecutable string Cashflare" "$APP_PATH/Info.plist"
-          fi
-
-          echo "Bundle ID: $(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Info.plist")"
-          echo "Executable: $(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Info.plist")"
+          # Sideloadly/Windows often fails on binary plists — force clean XML Info.plist
+          cp Cashflare/Info.plist "$APP_PATH/Info.plist"
+          plutil -convert xml1 "$APP_PATH/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$APP_PATH/Info.plist"
           plutil -lint "$APP_PATH/Info.plist"
+          echo "---- Info.plist head ----"
+          head -n 40 "$APP_PATH/Info.plist"
 
+          # Stub-sign so installd can treat it as a real bundle (Sideloadly will re-sign)
+          brew install ldid || true
+          if command -v ldid >/dev/null 2>&1; then
+            ldid -SCashflare/Entitlements.plist "$APP_PATH/Cashflare" || true
+          fi
+
+          rm -rf build/ipa
           mkdir -p build/ipa/Payload
-          rm -rf build/ipa/Payload/*
-          cp -R "$APP_PATH" build/ipa/Payload/
+          ditto "$APP_PATH" build/ipa/Payload/Cashflare.app
+
+          # Apple-style IPA packaging
+          rm -f build/Cashflare-unsigned.ipa
           (
             cd build/ipa
-            zip -qr ../Cashflare-unsigned.ipa Payload
+            ditto -c -k --sequesterRsrc --keepParent Payload ../Cashflare-unsigned.ipa
           )
+
           ls -lh build/Cashflare-unsigned.ipa
-          find build/ipa/Payload/Cashflare.app -iname 'bill50.jpg' | head
-          # Re-check inside the zip payload
-          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' build/ipa/Payload/Cashflare.app/Info.plist
+          # Verify zip contents
+          unzip -l build/Cashflare-unsigned.ipa | head -n 30
+          TMP=$(mktemp -d)
+          unzip -q build/Cashflare-unsigned.ipa -d "$TMP"
+          echo "Zipped bundle id: $(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$TMP/Payload/Cashflare.app/Info.plist")"
+          file "$TMP/Payload/Cashflare.app/Info.plist"
+          head -n 25 "$TMP/Payload/Cashflare.app/Info.plist"
 
       - name: Build signed archive + IPA
         if: steps.signing.outputs.mode == 'signed'
