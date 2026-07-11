@@ -2,16 +2,15 @@ $root = 'C:\Users\Baks\Projects\Cashflare'
 $projDir = Join-Path $root 'Cashflare.xcodeproj'
 New-Item -ItemType Directory -Force -Path $projDir | Out-Null
 
-function New-Id {
-    -join ((1..24) | ForEach-Object { '{0:X}' -f (Get-Random -Max 16) })
-}
+function New-Id { -join ((1..24) | ForEach-Object { '{0:X}' -f (Get-Random -Max 16) }) }
 
 $ids = @{}
 @(
-  'Project','Target','Sources','Resources','Frameworks','Product',
+  'Project','Target','Sources','ResourcesPhase','Frameworks','Product',
   'GroupRoot','GroupApp','GroupGame','GroupProducts',
-  'AppSwift','ContentSwift','CurrencySwift','GameStateSwift','BillFactorySwift','GameSceneSwift','Assets',
-  'BF_App','BF_Content','BF_Currency','BF_GameState','BF_BillFactory','BF_GameScene','BF_Assets',
+  'AppSwift','ContentSwift','GameStateSwift','BillFactorySwift','GameSceneSwift','CocosAtlasSwift','GameDataSwift',
+  'Assets','ResourcesFolder',
+  'BF_App','BF_Content','BF_GameState','BF_BillFactory','BF_GameScene','BF_CocosAtlas','BF_GameData','BF_Assets','BF_ResourcesFolder',
   'ProjectConfigList','TargetConfigList','ProjectDebug','ProjectRelease','TargetDebug','TargetRelease'
 ) | ForEach-Object { $ids[$_] = New-Id }
 
@@ -27,22 +26,26 @@ $pbx = @"
 /* Begin PBXBuildFile section */
 		$($ids.BF_App) /* CashflareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.AppSwift) /* CashflareApp.swift */; };
 		$($ids.BF_Content) /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.ContentSwift) /* ContentView.swift */; };
-		$($ids.BF_Currency) /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.CurrencySwift) /* Currency.swift */; };
 		$($ids.BF_GameState) /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.GameStateSwift) /* GameState.swift */; };
 		$($ids.BF_BillFactory) /* BillFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.BillFactorySwift) /* BillFactory.swift */; };
 		$($ids.BF_GameScene) /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.GameSceneSwift) /* GameScene.swift */; };
+		$($ids.BF_CocosAtlas) /* CocosAtlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.CocosAtlasSwift) /* CocosAtlas.swift */; };
+		$($ids.BF_GameData) /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = $($ids.GameDataSwift) /* GameData.swift */; };
 		$($ids.BF_Assets) /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = $($ids.Assets) /* Assets.xcassets */; };
+		$($ids.BF_ResourcesFolder) /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = $($ids.ResourcesFolder) /* Resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		$($ids.Product) /* Cashflare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cashflare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		$($ids.AppSwift) /* CashflareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashflareApp.swift; sourceTree = "<group>"; };
 		$($ids.ContentSwift) /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		$($ids.CurrencySwift) /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		$($ids.GameStateSwift) /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		$($ids.BillFactorySwift) /* BillFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillFactory.swift; sourceTree = "<group>"; };
 		$($ids.GameSceneSwift) /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		$($ids.CocosAtlasSwift) /* CocosAtlas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocosAtlas.swift; sourceTree = "<group>"; };
+		$($ids.GameDataSwift) /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
 		$($ids.Assets) /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		$($ids.ResourcesFolder) /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +82,7 @@ $pbx = @"
 				$($ids.ContentSwift) /* ContentView.swift */,
 				$($ids.GroupGame) /* Game */,
 				$($ids.Assets) /* Assets.xcassets */,
+				$($ids.ResourcesFolder) /* Resources */,
 			);
 			path = Cashflare;
 			sourceTree = "<group>";
@@ -86,10 +90,11 @@ $pbx = @"
 		$($ids.GroupGame) /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				$($ids.CurrencySwift) /* Currency.swift */,
+				$($ids.GameDataSwift) /* GameData.swift */,
 				$($ids.GameStateSwift) /* GameState.swift */,
 				$($ids.BillFactorySwift) /* BillFactory.swift */,
 				$($ids.GameSceneSwift) /* GameScene.swift */,
+				$($ids.CocosAtlasSwift) /* CocosAtlas.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -103,7 +108,7 @@ $pbx = @"
 			buildPhases = (
 				$($ids.Sources) /* Sources */,
 				$($ids.Frameworks) /* Frameworks */,
-				$($ids.Resources) /* Resources */,
+				$($ids.ResourcesPhase) /* Resources */,
 			);
 			buildRules = (
 			);
@@ -143,11 +148,12 @@ $pbx = @"
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		$($ids.Resources) /* Resources */ = {
+		$($ids.ResourcesPhase) /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				$($ids.BF_Assets) /* Assets.xcassets in Resources */,
+				$($ids.BF_ResourcesFolder) /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,10 +166,11 @@ $pbx = @"
 			files = (
 				$($ids.BF_App) /* CashflareApp.swift in Sources */,
 				$($ids.BF_Content) /* ContentView.swift in Sources */,
-				$($ids.BF_Currency) /* Currency.swift in Sources */,
 				$($ids.BF_GameState) /* GameState.swift in Sources */,
 				$($ids.BF_BillFactory) /* BillFactory.swift in Sources */,
 				$($ids.BF_GameScene) /* GameScene.swift in Sources */,
+				$($ids.BF_CocosAtlas) /* CocosAtlas.swift in Sources */,
+				$($ids.BF_GameData) /* GameData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,7 +227,7 @@ $pbx = @"
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
+					"`$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
@@ -249,7 +256,7 @@ $pbx = @"
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
+					"`$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
@@ -290,6 +297,9 @@ $pbx = @"
 }
 "@
 
+# Fix backtick-dollar that was used to avoid PowerShell expansion — convert to proper $(inherited)
+$pbx = $pbx.Replace('`$(inherited)', '$(inherited)')
+
 Set-Content -Path (Join-Path $projDir 'project.pbxproj') -Value $pbx -Encoding UTF8
-Write-Host 'OK'
-Get-ChildItem -Recurse $root | Select-Object FullName
+Write-Host 'OK project regenerated'
+Write-Host "Target ID: $($ids.Target)"

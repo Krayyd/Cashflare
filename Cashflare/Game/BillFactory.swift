@@ -2,66 +2,38 @@ import SpriteKit
 import UIKit
 
 enum BillFactory {
-    static func makeBill(currency: Currency, size: CGSize = CGSize(width: 78, height: 40)) -> SKSpriteNode {
-        let texture = renderBillTexture(currency: currency, size: size)
-        let node = SKSpriteNode(texture: texture, size: size)
+    static func texture(named file: String, folder: String = "Ruble") -> SKTexture? {
+        let base = (file as NSString).deletingPathExtension
+        let ext = (file as NSString).pathExtension
+        guard let url = Bundle.main.url(forResource: base, withExtension: ext, subdirectory: "Resources/\(folder)"),
+              let image = UIImage(contentsOfFile: url.path) else { return nil }
+        let tex = SKTexture(image: image)
+        tex.filteringMode = .linear
+        return tex
+    }
+
+    static func billNode(def: BillDef, width: CGFloat = 160) -> SKSpriteNode {
+        let tex = texture(named: def.image) ?? SKTexture()
+        let aspect = tex.size().height / max(tex.size().width, 1)
+        let node = SKSpriteNode(texture: tex, size: CGSize(width: width, height: width * aspect))
         node.name = "bill"
-        node.zPosition = 20
+        node.zPosition = 30
         return node
     }
 
-    private static func renderBillTexture(currency: Currency, size: CGSize) -> SKTexture {
-        let format = UIGraphicsImageRendererFormat.default()
-        format.scale = UIScreen.main.scale
-        let renderer = UIGraphicsImageRenderer(size: size, format: format)
-        let image = renderer.image { ctx in
-            let rect = CGRect(origin: .zero, size: size)
-            let bg = UIColor(hex: currency.billColorHex)
-            let accent = UIColor(hex: currency.accentHex)
-
-            bg.setFill()
-            UIBezierPath(roundedRect: rect, cornerRadius: 6).fill()
-
-            accent.withAlphaComponent(0.35).setStroke()
-            let inset = rect.insetBy(dx: 4, dy: 4)
-            let border = UIBezierPath(roundedRect: inset, cornerRadius: 4)
-            border.lineWidth = 1.5
-            border.stroke()
-
-            let symbol = currency.symbol as NSString
-            let font = UIFont.systemFont(ofSize: size.height * 0.42, weight: .bold)
-            let attrs: [NSAttributedString.Key: Any] = [
-                .font: font,
-                .foregroundColor: accent
-            ]
-            let textSize = symbol.size(withAttributes: attrs)
-            let textOrigin = CGPoint(
-                x: (size.width - textSize.width) / 2,
-                y: (size.height - textSize.height) / 2
-            )
-            symbol.draw(at: textOrigin, withAttributes: attrs)
+    static func deckNode(def: BillDef, width: CGFloat = 170) -> SKSpriteNode {
+        let tex = texture(named: def.side) ?? texture(named: def.image)
+        let size: CGSize
+        if let tex {
+            let aspect = tex.size().height / max(tex.size().width, 1)
+            size = CGSize(width: width, height: width * aspect)
+            let node = SKSpriteNode(texture: tex, size: size)
+            node.name = "deck"
+            node.zPosition = 25
+            return node
         }
-        return SKTexture(image: image)
-    }
-}
-
-extension UIColor {
-    convenience init(hex: String) {
-        let cleaned = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: cleaned).scanHexInt64(&int)
-        let r, g, b: UInt64
-        switch cleaned.count {
-        case 6:
-            (r, g, b) = (int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (r, g, b) = (1, 1, 1)
-        }
-        self.init(
-            red: CGFloat(r) / 255,
-            green: CGFloat(g) / 255,
-            blue: CGFloat(b) / 255,
-            alpha: 1
-        )
+        let node = SKSpriteNode(color: .green, size: CGSize(width: width, height: width * 0.5))
+        node.name = "deck"
+        return node
     }
 }

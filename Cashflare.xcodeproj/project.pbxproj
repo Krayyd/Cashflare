@@ -7,28 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F192C38C28670545163AC6B /* CashflareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F935B49C43AA1FC2B5CD60 /* CashflareApp.swift */; };
-		C6377DCFF3C114553952E23C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA032D8C5CA4436605CF5FA /* ContentView.swift */; };
-		17914CED7D71EF5409AA3B87 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F4699021A7F15E32919CE7 /* Currency.swift */; };
-		165801D44C23D3B51D72B7D9 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55421EB6995C626B91A107A /* GameState.swift */; };
-		DE2B65CBCE2BC829E90185E4 /* BillFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14904F8EE429E9E103D96681 /* BillFactory.swift */; };
-		3A298958ADD4C30A911A6AD4 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29169C821493C7C1005B2BBD /* GameScene.swift */; };
-		F5C39389D513500D2F9491D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A7276D4AC970F10F76D40A /* Assets.xcassets */; };
+		2816AF8B83DBE052DEFA1541 /* CashflareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BECA247CF1F9313588EF4 /* CashflareApp.swift */; };
+		575078A42DC44DD1CF17AE0A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50145CD19B54A1FDBBEF3ACD /* ContentView.swift */; };
+		99B0CEA565F97718BC3D6697 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8764938C95FC0B2176984C /* GameState.swift */; };
+		5FFE41A6BB8AFB0D190948E6 /* BillFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3DEF496C9013787AEE1C40 /* BillFactory.swift */; };
+		CFCA0943DB48D4EB3D84CBDF /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6661966C0A93549B23A067 /* GameScene.swift */; };
+		B236F3E3C213B00A57022D72 /* CocosAtlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC403FBA6EEFDBB4C794EC7 /* CocosAtlas.swift */; };
+		106829652A8C91AA7073369F /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79276300703652C070662598 /* GameData.swift */; };
+		211A070B6F1566E7B4C5FCD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E88EA72D4711C474071C461 /* Assets.xcassets */; };
+		43C3A751E4C20225B78CCA5D /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 1E62F5EEDDCCF5DBAB9E7CC5 /* Resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		01C16CBB4B8560E390868082 /* Cashflare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cashflare.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		65F935B49C43AA1FC2B5CD60 /* CashflareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashflareApp.swift; sourceTree = "<group>"; };
-		7FA032D8C5CA4436605CF5FA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		56F4699021A7F15E32919CE7 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
-		B55421EB6995C626B91A107A /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
-		14904F8EE429E9E103D96681 /* BillFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillFactory.swift; sourceTree = "<group>"; };
-		29169C821493C7C1005B2BBD /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		42A7276D4AC970F10F76D40A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DDD012F544368A88E533E32C /* Cashflare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cashflare.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B9BECA247CF1F9313588EF4 /* CashflareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashflareApp.swift; sourceTree = "<group>"; };
+		50145CD19B54A1FDBBEF3ACD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DF8764938C95FC0B2176984C /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		DF3DEF496C9013787AEE1C40 /* BillFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillFactory.swift; sourceTree = "<group>"; };
+		AF6661966C0A93549B23A067 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		1AC403FBA6EEFDBB4C794EC7 /* CocosAtlas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocosAtlas.swift; sourceTree = "<group>"; };
+		79276300703652C070662598 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
+		6E88EA72D4711C474071C461 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1E62F5EEDDCCF5DBAB9E7CC5 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		41A9C594222BCCFA2F5AF916 /* Frameworks */ = {
+		824838CB93B8FD35C4BD7013 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -38,40 +42,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1117F4F67C2ED0542EF4017D = {
+		7D18392C0A77E4CDC6592A5B = {
 			isa = PBXGroup;
 			children = (
-				3D37A2C041E43FDED34A3BDB /* Cashflare */,
-				D7B13C40C6415E1EA6053BB1 /* Products */,
+				493541732FC88AB7782D1475 /* Cashflare */,
+				2E30BA47B37A4FE6BE5E74AD /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		D7B13C40C6415E1EA6053BB1 /* Products */ = {
+		2E30BA47B37A4FE6BE5E74AD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				01C16CBB4B8560E390868082 /* Cashflare.app */,
+				DDD012F544368A88E533E32C /* Cashflare.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3D37A2C041E43FDED34A3BDB /* Cashflare */ = {
+		493541732FC88AB7782D1475 /* Cashflare */ = {
 			isa = PBXGroup;
 			children = (
-				65F935B49C43AA1FC2B5CD60 /* CashflareApp.swift */,
-				7FA032D8C5CA4436605CF5FA /* ContentView.swift */,
-				EA37BF9C635D837F5E83C822 /* Game */,
-				42A7276D4AC970F10F76D40A /* Assets.xcassets */,
+				6B9BECA247CF1F9313588EF4 /* CashflareApp.swift */,
+				50145CD19B54A1FDBBEF3ACD /* ContentView.swift */,
+				6A3AA1BEE1633FDC49F43052 /* Game */,
+				6E88EA72D4711C474071C461 /* Assets.xcassets */,
+				1E62F5EEDDCCF5DBAB9E7CC5 /* Resources */,
 			);
 			path = Cashflare;
 			sourceTree = "<group>";
 		};
-		EA37BF9C635D837F5E83C822 /* Game */ = {
+		6A3AA1BEE1633FDC49F43052 /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				56F4699021A7F15E32919CE7 /* Currency.swift */,
-				B55421EB6995C626B91A107A /* GameState.swift */,
-				14904F8EE429E9E103D96681 /* BillFactory.swift */,
-				29169C821493C7C1005B2BBD /* GameScene.swift */,
+				79276300703652C070662598 /* GameData.swift */,
+				DF8764938C95FC0B2176984C /* GameState.swift */,
+				DF3DEF496C9013787AEE1C40 /* BillFactory.swift */,
+				AF6661966C0A93549B23A067 /* GameScene.swift */,
+				1AC403FBA6EEFDBB4C794EC7 /* CocosAtlas.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -79,13 +85,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		ECD1B58C0B4B4E153A247DD0 /* Cashflare */ = {
+		DAE3BB82A9D5D3ADB0964888 /* Cashflare */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F80E32B2A3BBA2FB0DF54E7F /* Build configuration list for PBXNativeTarget "Cashflare" */;
+			buildConfigurationList = BB95F0A0F0102DFB94C2E061 /* Build configuration list for PBXNativeTarget "Cashflare" */;
 			buildPhases = (
-				7248DF9F35A6F57E6BD3D557 /* Sources */,
-				41A9C594222BCCFA2F5AF916 /* Frameworks */,
-				A4BEBF038D52C3029D4398DC /* Resources */,
+				F59F70E7A3129C47C34058A9 /* Sources */,
+				824838CB93B8FD35C4BD7013 /* Frameworks */,
+				B7C52032B20C36E222285474 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -93,20 +99,20 @@
 			);
 			name = Cashflare;
 			productName = Cashflare;
-			productReference = 01C16CBB4B8560E390868082 /* Cashflare.app */;
+			productReference = DDD012F544368A88E533E32C /* Cashflare.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C2878677B7AB643FD8FA2448 /* Project object */ = {
+		7D9412A53240051F3876C9DA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 			};
-			buildConfigurationList = 6606FEA61DE61BA370E0608D /* Build configuration list for PBXProject "Cashflare" */;
+			buildConfigurationList = 5B38AD479257E6BF4A218FB0 /* Build configuration list for PBXProject "Cashflare" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -114,45 +120,47 @@
 				en,
 				Base,
 			);
-			mainGroup = 1117F4F67C2ED0542EF4017D;
-			productRefGroup = D7B13C40C6415E1EA6053BB1 /* Products */;
+			mainGroup = 7D18392C0A77E4CDC6592A5B;
+			productRefGroup = 2E30BA47B37A4FE6BE5E74AD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ECD1B58C0B4B4E153A247DD0 /* Cashflare */,
+				DAE3BB82A9D5D3ADB0964888 /* Cashflare */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A4BEBF038D52C3029D4398DC /* Resources */ = {
+		B7C52032B20C36E222285474 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5C39389D513500D2F9491D7 /* Assets.xcassets in Resources */,
+				211A070B6F1566E7B4C5FCD0 /* Assets.xcassets in Resources */,
+				43C3A751E4C20225B78CCA5D /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		7248DF9F35A6F57E6BD3D557 /* Sources */ = {
+		F59F70E7A3129C47C34058A9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F192C38C28670545163AC6B /* CashflareApp.swift in Sources */,
-				C6377DCFF3C114553952E23C /* ContentView.swift in Sources */,
-				17914CED7D71EF5409AA3B87 /* Currency.swift in Sources */,
-				165801D44C23D3B51D72B7D9 /* GameState.swift in Sources */,
-				DE2B65CBCE2BC829E90185E4 /* BillFactory.swift in Sources */,
-				3A298958ADD4C30A911A6AD4 /* GameScene.swift in Sources */,
+				2816AF8B83DBE052DEFA1541 /* CashflareApp.swift in Sources */,
+				575078A42DC44DD1CF17AE0A /* ContentView.swift in Sources */,
+				99B0CEA565F97718BC3D6697 /* GameState.swift in Sources */,
+				5FFE41A6BB8AFB0D190948E6 /* BillFactory.swift in Sources */,
+				CFCA0943DB48D4EB3D84CBDF /* GameScene.swift in Sources */,
+				B236F3E3C213B00A57022D72 /* CocosAtlas.swift in Sources */,
+				106829652A8C91AA7073369F /* GameData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		743CEAA0012FEE66E3C58FE6 /* Debug */ = {
+		8C77DCFFB1F4F30C3B281468 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -171,7 +179,7 @@
 			};
 			name = Debug;
 		};
-		D3A74C4CF376F6D5BC15D9A3 /* Release */ = {
+		A6527D6D94A81E3717C183AC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -187,7 +195,7 @@
 			};
 			name = Release;
 		};
-		4FE3FC770AFDAEA639AD5E7D /* Debug */ = {
+		106DCDFBEFBAE8DDB629A6EE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -216,7 +224,7 @@
 			};
 			name = Debug;
 		};
-		610217327905441479622088 /* Release */ = {
+		D27D1BCD0E02DC413BCA5423 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -248,25 +256,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6606FEA61DE61BA370E0608D /* Build configuration list for PBXProject "Cashflare" */ = {
+		5B38AD479257E6BF4A218FB0 /* Build configuration list for PBXProject "Cashflare" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				743CEAA0012FEE66E3C58FE6 /* Debug */,
-				D3A74C4CF376F6D5BC15D9A3 /* Release */,
+				8C77DCFFB1F4F30C3B281468 /* Debug */,
+				A6527D6D94A81E3717C183AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F80E32B2A3BBA2FB0DF54E7F /* Build configuration list for PBXNativeTarget "Cashflare" */ = {
+		BB95F0A0F0102DFB94C2E061 /* Build configuration list for PBXNativeTarget "Cashflare" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4FE3FC770AFDAEA639AD5E7D /* Debug */,
-				610217327905441479622088 /* Release */,
+				106DCDFBEFBAE8DDB629A6EE /* Debug */,
+				D27D1BCD0E02DC413BCA5423 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = C2878677B7AB643FD8FA2448 /* Project object */;
+	rootObject = 7D9412A53240051F3876C9DA /* Project object */;
 }

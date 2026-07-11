@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ECD1B58C0B4B4E153A247DD0"
+               BlueprintIdentifier = "DAE3BB82A9D5D3ADB0964888"
                BuildableName = "Cashflare.app"
                BlueprintName = "Cashflare"
                ReferencedContainer = "container:Cashflare.xcodeproj">
@@ -43,7 +43,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ECD1B58C0B4B4E153A247DD0"
+            BlueprintIdentifier = "DAE3BB82A9D5D3ADB0964888"
             BuildableName = "Cashflare.app"
             BlueprintName = "Cashflare"
             ReferencedContainer = "container:Cashflare.xcodeproj">
@@ -60,7 +60,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ECD1B58C0B4B4E153A247DD0"
+            BlueprintIdentifier = "DAE3BB82A9D5D3ADB0964888"
             BuildableName = "Cashflare.app"
             BlueprintName = "Cashflare"
             ReferencedContainer = "container:Cashflare.xcodeproj">
