@@ -74,7 +74,7 @@ jobs:
           echo "TEAM_ID=$TEAM_ID" >> "$GITHUB_ENV"
           echo "Installed profile $PP_UUID (team $TEAM_ID)"
 
-      - name: Build unsigned archive
+      - name: Build unsigned app
         if: steps.signing.outputs.mode == 'unsigned'
         run: |
           mkdir -p build
@@ -84,23 +84,30 @@ jobs:
             -scheme Cashflare \
             -configuration Release \
             -destination 'generic/platform=iOS' \
-            -archivePath "$PWD/build/Cashflare.xcarchive" \
+            -derivedDataPath "$PWD/build/DerivedData" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
+            PRODUCT_BUNDLE_IDENTIFIER=com.krayd.cashflare \
             ONLY_ACTIVE_ARCH=NO \
-            archive
+            build
 
       - name: Package unsigned IPA payload
         if: steps.signing.outputs.mode == 'unsigned'
         run: |
+          APP_PATH=$(find build/DerivedData/Build/Products -name 'Cashflare.app' | head -n 1)
+          echo "Using app: $APP_PATH"
+          test -d "$APP_PATH"
           mkdir -p build/ipa/Payload
-          cp -R build/Cashflare.xcarchive/Products/Applications/Cashflare.app build/ipa/Payload/
+          cp -R "$APP_PATH" build/ipa/Payload/
           (
             cd build/ipa
             zip -r ../Cashflare-unsigned.ipa Payload
           )
           ls -lh build/Cashflare-unsigned.ipa
+          # Sanity: resources must be inside the app
+          find build/ipa/Payload/Cashflare.app -iname 'bill50.jpg' | head
+          find build/ipa/Payload/Cashflare.app -iname 'atlas0.png' | head
 
       - name: Build signed archive + IPA
         if: steps.signing.outputs.mode == 'signed'
