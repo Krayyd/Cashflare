@@ -1,0 +1,170 @@
+name: Build IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Cashflare IPA
+    runs-on: macos-14
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer || \
+          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          xcodebuild -version
+
+      - name: Show project
+        run: |
+          ls -la
+          xcodebuild -list -project Cashflare.xcodeproj
+
+      - name: Resolve signing mode
+        id: signing
+        run: |
+          if [ -n "${{ secrets.BUILD_CERTIFICATE_BASE64 }}" ] && [ -n "${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}" ]; then
+            echo "mode=signed" >> "$GITHUB_OUTPUT"
+            echo "Signing credentials found — building signed IPA"
+          else
+            echo "mode=unsigned" >> "$GITHUB_OUTPUT"
+            echo "No signing secrets — building unsigned archive artifact"
+          fi
+
+      - name: Install Apple certificate and provisioning profile
+        if: steps.signing.outputs.mode == 'signed'
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
+          PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          PP_UUID=$(/usr/libexec/PlistBuddy -c 'Print UUID' /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$PP_UUID.mobileprovision"
+          echo "PROVISIONING_PROFILE_UUID=$PP_UUID" >> "$GITHUB_ENV"
+
+          TEAM_ID=$(/usr/libexec/PlistBuddy -c 'Print TeamIdentifier:0' /dev/stdin <<< "$(security cms -D -i "$PP_PATH")")
+          echo "TEAM_ID=$TEAM_ID" >> "$GITHUB_ENV"
+          echo "Installed profile $PP_UUID (team $TEAM_ID)"
+
+      - name: Build unsigned archive
+        if: steps.signing.outputs.mode == 'unsigned'
+        run: |
+          mkdir -p build
+          set -o pipefail
+          xcodebuild \
+            -project Cashflare.xcodeproj \
+            -scheme Cashflare \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$PWD/build/Cashflare.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            ONLY_ACTIVE_ARCH=NO \
+            archive
+
+      - name: Package unsigned IPA payload
+        if: steps.signing.outputs.mode == 'unsigned'
+        run: |
+          mkdir -p build/ipa/Payload
+          cp -R build/Cashflare.xcarchive/Products/Applications/Cashflare.app build/ipa/Payload/
+          (
+            cd build/ipa
+            zip -r ../Cashflare-unsigned.ipa Payload
+          )
+          ls -lh build/Cashflare-unsigned.ipa
+
+      - name: Build signed archive + IPA
+        if: steps.signing.outputs.mode == 'signed'
+        env:
+          EXPORT_METHOD: ${{ secrets.EXPORT_METHOD }}
+        run: |
+          mkdir -p build
+          METHOD="${EXPORT_METHOD:-ad-hoc}"
+
+          xcodebuild \
+            -project Cashflare.xcodeproj \
+            -scheme Cashflare \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$PWD/build/Cashflare.xcarchive" \
+            DEVELOPMENT_TEAM="$TEAM_ID" \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            PROVISIONING_PROFILE="$PROVISIONING_PROFILE_UUID" \
+            archive
+
+          cat > build/ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>${METHOD}</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>teamID</key>
+            <string>${TEAM_ID}</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>com.krayd.cashflare</key>
+              <string>${PROVISIONING_PROFILE_UUID}</string>
+            </dict>
+            <key>compileBitcode</key>
+            <false/>
+            <key>stripSwiftSymbols</key>
+            <true/>
+          </dict>
+          </plist>
+          EOF
+
+          xcodebuild -exportArchive \
+            -archivePath "$PWD/build/Cashflare.xcarchive" \
+            -exportPath "$PWD/build/export" \
+            -exportOptionsPlist "$PWD/build/ExportOptions.plist"
+
+          cp build/export/*.ipa build/Cashflare.ipa
+          ls -lh build/Cashflare.ipa
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cashflare-IPA
+          path: |
+            build/Cashflare.ipa
+            build/Cashflare-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Cleanup keychain
+        if: always() && steps.signing.outputs.mode == 'signed'
+        run: |
+          security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" || true
